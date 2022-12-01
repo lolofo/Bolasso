@@ -4,15 +4,15 @@ from sklearn.linear_model import Lasso, LinearRegression
 from typing import Dict
 
 def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float) -> Dict[str, np.ndarray]:
-    """_summary_
+    """ bolasso
 
     Args:
-        X (np.ndarray): _description_
-        Y (np.ndarray): _description_
-        m (int): _description_
-        mu (float): _description_
+        X (np.ndarray): The dataset we'll use
+        Y (np.ndarray): the target variable
+        m (int): number of bootstrap
+        mu (float): regularization coefficient for the lasso regularization
     """
-    W = np.zeros(X.shape[1], m)
+    W = np.zeros((X.shape[1], m))
 
     for i in range(m):
         X_boot, Y_boot = sklearn.utils.resample(X, Y, random_state=0)
@@ -24,19 +24,19 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float) -> Dict[str, np
         
     W = np.sign(W)
 
-    J = np.ones(X.shape[1], dtype=bool)
-    current_W = W[: ,0]
-    for i in range(1, m):
-        next_W = W[:, i]
-        buff = next_W == current_W
-        res = res and buff
-        current_W = next_W # update for the comparison
+    sg_1 = np.all(W == 1, axis=1)
+    sg_3 = np.all(W == -1, axis=1)
 
+    J = np.logical_or(sg_1, sg_3)
 
     final_model = LinearRegression()
-    final_model.fit(X[:, J], Y[J])
+    final_model.fit(X[:, J], Y)
 
-    return {"coef" : final_model.coef_ , "J" : J}
+    coef = np.zeros(X.shape[1])
+    coef[J] = final_model.coef_ 
+
+
+    return {"coef" : coef , "J" : J}
 
     
 
