@@ -66,5 +66,5 @@ def generate_synthetic_data(p : int, r : int, n : int, rep : int, verbose : bool
         "X" : X_containers,
         "Y" : Y_containers,
         "w" : W_containers,
-        "crit_2" : np.max(np.abs(Q1 @ np.linalg.inv(Q1) @ np.sign(w[:r]))),
+        "crit_2" : np.max(np.abs(Q1 @ np.linalg.inv(Q2) @ np.sign(w[:r]))),
     }
