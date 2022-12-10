@@ -30,16 +30,15 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool 
     sg_3 = np.all(W == -1, axis=1)
 
     J = np.logical_or(sg_1, sg_3)
+    if all(~J):
+        verboseprint("J is empty array")
+        coef = np.zeros(X.shape[1])
+    else:
+        final_model = LinearRegression()
+        final_model.fit(X[:, J], Y)
 
-    final_model = LinearRegression()
-    final_model.fit(X[:, J], Y)
-
-    coef = np.zeros(X.shape[1])
-    coef[J] = final_model.coef_ 
+        coef = np.zeros(X.shape[1])
+        coef[J] = final_model.coef_ 
 
 
     return {"coef" : coef , "J" : J}
-
-    
-
-     
