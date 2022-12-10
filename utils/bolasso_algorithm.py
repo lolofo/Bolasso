@@ -3,7 +3,7 @@ import sklearn
 from sklearn.linear_model import Lasso, LinearRegression
 from typing import Dict
 
-def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float) -> Dict[str, np.ndarray]:
+def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool = True) -> Dict[str, np.ndarray]:
     """ bolasso
 
     Args:
@@ -12,10 +12,12 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float) -> Dict[str, np
         m (int): number of bootstrap
         mu (float): regularization coefficient for the lasso regularization
     """
+    
+    
     W = np.zeros((X.shape[1], m))
-
+    verboseprint = print if verbose else lambda *a, **k: None
     for i in range(m):
-        X_boot, Y_boot = sklearn.utils.resample(X, Y, random_state=0)
+        X_boot, Y_boot = sklearn.utils.resample(X, Y)
         model = Lasso(alpha=mu, fit_intercept=False)
         model.fit(X_boot, Y_boot)
         w_boot = model.coef_
