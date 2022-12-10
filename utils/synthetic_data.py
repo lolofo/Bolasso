@@ -104,13 +104,14 @@ def load_data(p : int, r : int, n : int, rep : int, cache_path: str, criterion_2
 
             res = generate_synthetic_data(p, r, n , rep, verbose=False)
             tmp = res["crit_2"]
+            
             tmp = tmp <= 1 # do we have a criterion 2 respect
+            print("\t >> ", tmp)
 
             if criterion_2 and tmp :
                 cont = False
-            if ~criterion_2 and ~tmp:
+            if (not criterion_2) and (not tmp):
                 cont = False
-
         if verbose:
             print(f">> data created with criterion (2) : {res['crit_2']}")
 
