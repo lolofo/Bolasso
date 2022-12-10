@@ -40,7 +40,7 @@ def generate_synthetic_data(p : int, r : int, n : int, rep : int, verbose : bool
     Y = np.zeros(n)
 
     # generation of the covariance matrix
-    G = np.random.randn(p,p)
+    G = np.random.randn(p, p)
     Q = G @ G.T
     d = np.sqrt(np.diag(1 / np.diagonal(Q)))
     Q = d @ Q @ d.T
