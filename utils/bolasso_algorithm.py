@@ -4,6 +4,7 @@ from sklearn.linear_model import Lasso, LinearRegression
 from typing import Dict
 
 def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool = True) -> Dict[str, np.ndarray]:
+    
     """ bolasso
 
     Args:
@@ -28,8 +29,8 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool 
 
     sg_1 = np.all(W == 1, axis=1)
     sg_3 = np.all(W == -1, axis=1)
-
     J = np.logical_or(sg_1, sg_3)
+    
     if all(~J):
         verboseprint("J is empty array")
         coef = np.zeros(X.shape[1])
