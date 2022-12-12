@@ -27,9 +27,7 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool 
         
     W = np.sign(W)
 
-    sg_1 = np.all(W == 1, axis=1)
-    sg_3 = np.all(W == -1, axis=1)
-    J = np.logical_or(sg_1, sg_3)
+    J = np.all(np.abs(W) > 0, axis=1)
     
     if all(~J):
         verboseprint("J is empty array")
@@ -41,5 +39,4 @@ def bolasso(X : np.ndarray, Y : np.ndarray, m : int, mu : float, verbose : bool 
         coef = np.zeros(X.shape[1])
         coef[J] = final_model.coef_ 
 
-
-    return {"coef" : coef , "J" : J}
+    return {"J" : J, "coef" : coef}
